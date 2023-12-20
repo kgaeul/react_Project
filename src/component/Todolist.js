@@ -1,6 +1,6 @@
 import React, {useState,useEffect}  from 'react';
 import '../Todolist.css';
-import tree from '../img/bf82c1e7-4158-43e8-b241-eac81a8b5241.jpg';
+import tree from '../img/꼬링크.jpeg';
 
 
 
@@ -13,6 +13,9 @@ const Todolist = () =>  {
 
     //newTodo는 새로운 할일을 추가 작성할 수 있는 공간
     const [newTodo, setNewTodo] = useState('');
+
+    const [editIndex,seteditIndex]=useState(null);
+    const[editPost,seteditPost]=useState('');
 
     //할일이 추가될 때마다 추가할 수 있는 const 생성
     const addTodo=() => {
@@ -27,7 +30,7 @@ const Todolist = () =>  {
       }
     };
 
-  const removeTodo = (index) => {
+  const removePosts = (index) => {
     //현재 할 일 목록 배열을 복사
       const updateTodos = [...todos]
     // 복사된 배열에서 지정된 자리값(index)를 제거하겠다는 의미
@@ -57,22 +60,56 @@ const Todolist = () =>  {
     console.log('todos 변경됨 : ',todos);
   } ,[todos]);
 
+  //수정하러 가기기
+  const startediting=(index,todos)=>{
+    seteditIndex(index);
+    seteditPost(todos);
+}
+
+//수정 저장하기
+const saveEdit=()=>{
+    const updatePost = [...todos];
+
+    updatePost[editIndex] = editPost;
+    setTodos(updatePost);
+    seteditIndex(null);
+}
+
+ //수정 취소하기
+const cancleEdit=()=>{
+    seteditIndex(null);
+    seteditPost('');
+}
+
   return (
     <div>
       <img src={tree}></img>
-      <h2>useState를 활용한 TodoList</h2>
+      <h2>포켓몬 친구들</h2>
       <div id="todolist">  
         <input type="text" value={newTodo} onChange={(e)=>setNewTodo(e.target.value)}/>
         &nbsp;
-        <button onClick={addTodo}>댓글등록</button>
+        <button id="GOupdate" onClick={addTodo}>댓글등록</button>
         <ul>
          {todos.map((todo,index)=>(
           <li id="today" key={index}>
-            {todo}
-            <button id="btn" onClick={addTodo}>수정하기</button>
-            &nbsp;&nbsp;
-            <button onClick={()=>removeTodo(index)}>삭제하기</button>
-            <hr></hr>
+              {editIndex===index ? (
+                        <div>
+                            <input id="updateComment" type="text" value={editPost} onChange={(e) => seteditPost(e.target.value)} />
+                            &nbsp;
+                            <button onClick={saveEdit}>수정</button>
+                            &nbsp;
+                            <button onClick={cancleEdit}>취소</button>
+                        </div>
+                    ) : (
+                        <div>
+                           <span id="comment">{todo}</span>
+                            &nbsp;
+                            <button  onClick={()=>startediting(index,todo)}>수정하기</button>
+                            &nbsp;
+                            <button onClick={removePosts}>삭제하기</button>
+                            <hr></hr>
+                        </div>
+                    )}
           </li>
          ))} 
         </ul>

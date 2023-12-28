@@ -1,13 +1,12 @@
-import React from 'react';
-
-const ListPage = ({ action, deleteAction }) => {
+//ListPage.js
+const ListPage = ({ actions, deleteAction }) => {
   return (
     <div>
       <h2>리스트 페이지</h2>
       <ul>
-        {action.map((action) => (
+        {actions.map((action) => (
           <li key={action.id}>
-            {action.title}-{action.general}-{action.data}
+            {action.title} - {action.genre} - {action.date}
             <button onClick={() => deleteAction(action.id)}>Delete</button>
           </li>
         ))}
@@ -15,5 +14,4 @@ const ListPage = ({ action, deleteAction }) => {
     </div>
   );
 };
-
 export default ListPage;

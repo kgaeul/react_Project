@@ -1,9 +1,18 @@
 //Todo.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  ListPage,
+} from 'react-router-dom';
 function Todo() {
   //js로 state 상태관리
-  const [action, setAction] = useState([]);
+  const [actions, setAction] = useState([]);
+  const deleteAction = (id) => {
+    setAction(actions.filter((actions) => actions.id !== id));
+  };
   return (
     <Router>
       <div>
@@ -18,7 +27,12 @@ function Todo() {
           </ul>
         </nav>
         <Routes>
-          <Route>메인</Route>
+          <Route
+            path='/'
+            element={<ListPage actions={actions} deleteAction={deleteAction} />}
+          >
+            메인
+          </Route>
           <Route>생성</Route>
         </Routes>
       </div>

@@ -1,12 +1,8 @@
 //Todo.js
 import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  ListPage,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import ListPage from './ListPage';
+
 function Todo() {
   //js로 state 상태관리
   const [actions, setAction] = useState([]);

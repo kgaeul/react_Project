@@ -75,12 +75,38 @@ const NumberGuessingGame = () => {
       <div className='card-body'>
         <h1 className='card-title'>숫자맞추기 게임</h1>
         <p>1부터 10 사이의 숫자맞추기</p>
+        <div class='spinner-grow text-primary me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-secondary me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-success me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-danger me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-warning me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-info me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-light me-3' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+        <div class='spinner-grow text-dark ' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+
         <form onSubmit={inputSubmit}>
           <input
             type='number'
             value={userGuess}
             onChange={inputChange}
             placeholder='숫자를 입력해주세요'
+            className='mt-3 mb-3'
           ></input>
           <button type='submit'>제출하기</button>
         </form>

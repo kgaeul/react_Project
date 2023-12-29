@@ -13,13 +13,7 @@ export default function Todolist() {
   const [date, setDate] = useState('');
 
   const addTodo = () => {
-    if (!date || newTodo) {
-      alert('출시일과 할일을 모두 입력해주세요');
-      return;
-    }
-
     if (!todos.includes(newTodo)) {
-      setTodos([...todos, { newTodo, date }]);
       setTodos([...todos, newTodo]);
       setNewTodo('');
     } else {
@@ -31,7 +25,7 @@ export default function Todolist() {
     setEditingIndex(index);
     //수정을 진행할 경우 할일 목록에 있는 할일만 가져옴
     //왜냐하면 날짜는 수정하고 싶을 수 있으니 그대로 가져오지 않은 것
-    setEditTodo(todo, newTodo);
+    setEditTodo(todo);
   };
 
   const saveEdit = () => {
@@ -39,7 +33,7 @@ export default function Todolist() {
 
     //작성일과 수정한 내용을 모두 저장하기 위해서는 배열을 이용
     //updateTodos[editingIndex] = { 수정한 내용 새로 넣어주기 때문에 값 대칭: editTodo, 처음부터 선택하게 만들예정 };
-    updateTodos[editingIndex] = { newTodo: editTodo, date };
+    updateTodos[editingIndex] = editTodo;
     setTodos(updateTodos);
     setEditingIndex(null);
   };
@@ -63,11 +57,7 @@ export default function Todolist() {
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
         ></input>
-        <input
-          type='date'
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        ></input>
+
         <button onClick={addTodo}>할일 추가하기</button>
       </div>
       <ul>
@@ -77,14 +67,10 @@ export default function Todolist() {
               <div>
                 <input
                   type='text'
-                  value={newTodo}
+                  value={editTodo}
                   onChange={(e) => setEditTodo(e.target.value)}
                 />
-                <input
-                  type='date'
-                  value={date}
-                  onChange={(e) => setEditTodo(e.target.value)}
-                ></input>
+
                 <button onClick={saveEdit}>수정</button>
                 <button onClick={cancelEdit}>취소</button>
               </div>

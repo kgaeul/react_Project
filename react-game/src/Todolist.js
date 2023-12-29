@@ -1,43 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const TodoList = () => {
-  const [todos, setTodos] = useState(() => {
-    const storedTodos = localStorage.getItem('todos');
-    return storedTodos ? JSON.parse(storedTodos) : [];
-  });
+export default function Todolist() {
+  //추가
+  const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
-  const [count, setCount] = useState(0);
+
+  //수정
   const [editingIndex, setEditingIndex] = useState(null);
   const [editTodo, setEditTodo] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-    setCount(todos.length);
-    document.title = `할일 갯수 : ${count}`;
-  }, [todos, count]);
+  //날짜
+  const [date, setDate] = useState('');
 
   const addTodo = () => {
-    setTodos([...todos, newTodo]);
-    setNewTodo('');
+    if (!date || newTodo) {
+      alert('출시일과 할일을 모두 입력해주세요');
+      return;
+    }
+
+    if (!todos.includes(newTodo)) {
+      setTodos([...todos, { newTodo, date }]);
+      setTodos([...todos, newTodo]);
+      setNewTodo('');
+    } else {
+      alert('이미 존재하는 할일 입니다.');
+    }
   };
 
-  const removeTodo = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos.splice(index, 1);
-    setTodos(updatedTodos);
-  };
-
-  const startEditing = (index, todo) => {
+  const editStart = (index, todo) => {
     setEditingIndex(index);
-    setEditTodo(todo);
+    //수정을 진행할 경우 할일 목록에 있는 할일만 가져옴
+    //왜냐하면 날짜는 수정하고 싶을 수 있으니 그대로 가져오지 않은 것
+    setEditTodo(todo, newTodo);
   };
 
   const saveEdit = () => {
-    const updatedTodos = [...todos];
-    updatedTodos[editingIndex] = editTodo;
-    setTodos(updatedTodos);
+    const updateTodos = [...todos];
+
+    //작성일과 수정한 내용을 모두 저장하기 위해서는 배열을 이용
+    //updateTodos[editingIndex] = { 수정한 내용 새로 넣어주기 때문에 값 대칭: editTodo, 처음부터 선택하게 만들예정 };
+    updateTodos[editingIndex] = { newTodo: editTodo, date };
+    setTodos(updateTodos);
     setEditingIndex(null);
   };
 
@@ -46,83 +49,55 @@ const TodoList = () => {
     setEditTodo('');
   };
 
+  const removeEdit = (index) => {
+    const deleteTodos = [...todos];
+    deleteTodos.splice(index, 1);
+    setTodos(deleteTodos);
+  };
+
   return (
-    <div>
-      <Container>
-        <Row>
-          <Col>
-            <div class='card mt-5 text-center' style={{ marginBottom: '30px' }}>
-              <h5 class='card-header'>To Do List</h5>
-              <div class='card-body'>
-                <h5 class='card-title'>Today's TodoList</h5>
-                <p class='card-text'>
-                  <Form className='mb-3 text-center card-body'>
-                    <input
-                      type='text'
-                      value={newTodo}
-                      onChange={(e) => setNewTodo(e.target.value)}
-                      placeholder='할 일 추가'
-                      style={{ width: '500px', height: '40px' }}
-                    />
-
-                    <Button variant='dark' className='ms-3' onClick={addTodo}>
-                      추가하기
-                    </Button>
-                  </Form>
-                  <ul style={{ listStyle: 'none' }}>
-                    {todos.map((todo, index) => (
-                      <li key={index} className='mb-2'>
-                        {editingIndex === index ? (
-                          <div className='text-center'>
-                            <input
-                              type='text'
-                              value={editTodo}
-                              onChange={(e) => setEditTodo(e.target.value)}
-                            />
-                            <Button
-                              variant='dark'
-                              className='m-3'
-                              onClick={saveEdit}
-                            >
-                              저장
-                            </Button>
-                            <Button variant='light' onClick={cancelEdit}>
-                              취소
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className='text-center'>
-                            {todo}
-                            <Button
-                              className='ml-2 m-2'
-                              variant='dark'
-                              onClick={() => startEditing(index, todo)}
-                            >
-                              수정하기
-                            </Button>
-                            <Button
-                              className='ml-2'
-                              variant='light'
-                              onClick={() => removeTodo(index)}
-                            >
-                              삭제하기
-                            </Button>
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </p>
-                <a href='./' class='btn btn-primary'>
-                  Go Main
-                </a>
+    <>
+      <div>
+        <input
+          type='text'
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+        ></input>
+        <input
+          type='date'
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        ></input>
+        <button onClick={addTodo}>할일 추가하기</button>
+      </div>
+      <ul>
+        {todos.map((todo, index) => (
+          <li>
+            {editingIndex === index ? (
+              <div>
+                <input
+                  type='text'
+                  value={newTodo}
+                  onChange={(e) => setEditTodo(e.target.value)}
+                />
+                <input
+                  type='date'
+                  value={date}
+                  onChange={(e) => setEditTodo(e.target.value)}
+                ></input>
+                <button onClick={saveEdit}>수정</button>
+                <button onClick={cancelEdit}>취소</button>
               </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+            ) : (
+              <div>
+                {todo}
+                <button onClick={() => editStart(index, todo)}>수정하기</button>
+                <button onClick={() => removeEdit(index)}>삭제하기</button>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </>
   );
-};
-
-export default TodoList;
+}

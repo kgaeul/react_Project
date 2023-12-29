@@ -5,10 +5,11 @@ import NumberGuessingGame from './NumberGuessingGame';
 import Quiz from './Quiz';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Weather from './Weather';
+import WeatherSearch from './WeatherSearch';
 import TodoList from './Todolist';
 import Footer from './Footer';
 import Blog from './Blog';
+import Weather from './Weather';
 
 const App = () => {
   const Home = () => (
@@ -25,7 +26,7 @@ const App = () => {
         <Router>
           <nav class='navbar navbar-expand-lg navbar-light bg-light'>
             <div class='container-fluid'>
-              <a class='navbar-brand' href='/'>
+              <a class='navbar-brand ms-5 me-5' href='/'>
                 Autumn
               </a>
               <button
@@ -41,7 +42,7 @@ const App = () => {
               </button>
               <div class='collapse navbar-collapse' id='navbarNavDropdown'>
                 <ul class='navbar-nav'>
-                  <li class='nav-item'>
+                  <li class='nav-item '>
                     <Nav.Link
                       as={Link}
                       to='/'
@@ -69,15 +70,15 @@ const App = () => {
                     </Nav.Link>
                   </li>
                   <li class='nav-item'>
-                    <NavDropdown className='text-dark ' title='Game'>
+                    <NavDropdown className='text-dark me-5 ' title='Weather'>
                       <NavDropdown.Item as={Link} to='/WeatherSearch'>
                         나라별 날씨 검색
                       </NavDropdown.Item>
                       <li>
                         <hr class='dropdown-divider' />
                       </li>
-                      <NavDropdown.Item as={Link} to='/Quiz'>
-                        Quiz
+                      <NavDropdown.Item as={Link} to='/Weather'>
+                        현재 위치 날씨 검색
                       </NavDropdown.Item>
                     </NavDropdown>
                   </li>
@@ -101,7 +102,7 @@ const App = () => {
 
           <Routes>
             <Route path='/' element={<Home />}></Route>
-            <Route path='/weather' element={<Weather />}></Route>
+            <Route path='/WeatherSearch' element={<WeatherSearch />}></Route>
             <Route
               path='/NumberGuessingGame'
               element={<NumberGuessingGame />}
@@ -109,6 +110,7 @@ const App = () => {
             <Route path='/Quiz' element={<Quiz />}></Route>
             <Route path='/TodoList' element={<TodoList />}></Route>
             <Route path='/blog' element={<Blog />}></Route>
+            <Route path='/Weather' element={<Weather />}></Route>
           </Routes>
         </Router>
       </div>
